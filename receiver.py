@@ -1,3 +1,4 @@
+import sys
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
@@ -18,5 +19,10 @@ def decrypt_file(input_file, output_file, private_key_file):
 
     print(f"File '{input_file}' decrypted successfully!")
 
-# Example usage
-decrypt_file("encrypted_files/test.enc", "decrypted_files/test.txt", "keys/private.pem")
+# Check for command-line arguments
+if len(sys.argv) != 2:
+    print("Usage: python receiver.py <encrypted_file>")
+    sys.exit(1)
+
+input_filename = sys.argv[1]
+decrypt_file(f"encrypted_files/{input_filename}", f"decrypted_files/{input_filename.replace('.enc', '')}", "keys/private.pem")
