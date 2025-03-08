@@ -1,9 +1,8 @@
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
 import sys
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 
 def encrypt_file(input_file, output_file, public_key_file):
-    # Load recipient's public key
     with open(public_key_file, "rb") as f:
         public_key = RSA.import_key(f.read())
 
@@ -19,5 +18,10 @@ def encrypt_file(input_file, output_file, public_key_file):
 
     print(f"File '{input_file}' encrypted successfully!")
 
-# Example usage
-encrypt_file("test.txt", "encrypted_files/test.enc", "keys/public.pem")
+# Check if file argument is given
+if len(sys.argv) != 2:
+    print("Usage: python sender.py <file_name>")
+    sys.exit(1)
+
+input_filename = sys.argv[1]
+encrypt_file(input_filename, f"encrypted_files/{input_filename}.enc", "keys/public.pem")
